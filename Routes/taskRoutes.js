@@ -1,5 +1,6 @@
 var router = require("express").Router();
 var TaskController = require("../Controllers/taskController");
+var auth = require('../middleware/auth')
 
 router.get("/", TaskController.getAllTasks);
 
@@ -13,6 +14,6 @@ router.post("/", TaskController.addTask);
 
 router.put("/", TaskController.updateTask);
 
-router.delete("/", TaskController.deleteTask);
+router.delete("/delete/:id", TaskController.deleteTask);
 
 module.exports = router;

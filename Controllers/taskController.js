@@ -21,7 +21,7 @@ exports.getTaskById = (req, res) => {
 };
 
 exports.getTaskByAdder = (req, res) => {
-  Task.findOne({ addedById: req.params.id }, (error, task) => {
+  Task.find({ addedBy: req.params.id }, (error, task) => {
     if (error) {
       return res.status(500).json({ status: false, error: error });
     } else {
@@ -31,7 +31,7 @@ exports.getTaskByAdder = (req, res) => {
 };
 
 exports.getTaskByAssigned = (req, res) => {
-  Task.findOne({ assignedToId: req.params.id }, (error, task) => {
+  Task.find({ assignedTo: req.params.id }, (error, task) => {
     if (error) {
       return res.status(500).json({ status: false, error: error });
     } else {
@@ -45,10 +45,9 @@ exports.addTask = (req, res) => {
     title: req.body.title,
     description: req.body.description,
     status: req.body.status,
-    completedDate: null,
     addedBy: req.body.addedBy,
     assignedTo: req.body.assignedTo,
-    isCompleted: req.body.isCompleted,
+    dueDate: req.body.dueDate,
   });
 
   newTask.save((err) => {
@@ -69,8 +68,7 @@ exports.updateTask = (req, res) => {
       task.title = req.body.title;
       task.description = req.body.description;
       task.status = req.body.status;
-      task.completedDate = req.body.completedDate;
-      task.isCompleted = req.body.isCompleted;
+      task.dueDate = req.body.dueDate;
 
       task.save((err, task) => {
         if (err) {
@@ -91,7 +89,7 @@ exports.updateTask = (req, res) => {
 };
 
 exports.deleteTask = (req, res) => {
-  Task.findByIdAndRemove({ _id: req.body.id }, (err) => {
+  Task.findByIdAndRemove({ _id: req.params.id }, (err) => {
     if (err) {
       return res.status(500).json(err);
     } else {
